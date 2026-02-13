@@ -2,6 +2,7 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
 import remarkToc from "remark-toc";
+import react from "@astrojs/react";
 import remarkCollapse from "remark-collapse";
 import {
   transformerNotationDiff,
@@ -15,6 +16,7 @@ import { SITE } from "./src/config";
 export default defineConfig({
   site: SITE.website,
   integrations: [
+    react(),
     sitemap({
       filter: page => SITE.showArchives || !page.endsWith("/archives"),
     }),
