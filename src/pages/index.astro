@@ -1,82 +1,108 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import { pinyin } from 'pinyin-pro';
-import { HiSparkles, HiVolumeUp, HiMicrophone, HiFire, HiChevronRight } from 'react-icons/hi';
+import { 
+  HiBookOpen, HiCollection, HiMicrophone, HiChartBar, HiPlusCircle, HiArrowRight 
+} from 'react-icons/hi/index.js';
 
-// 模拟 HSK 数据
-const word = "深造";
-const translation = "To pursue advanced studies";
-const displayPinyin = pinyin(word, { type: 'tone' });
+// 定义功能板块
+const modules = [
+  {
+    title: "AI 背单词",
+    desc: "多邻国式沉浸学习",
+    icon: HiBookOpen,
+    color: "bg-indigo-500",
+    link: "/learn", // 对应 src/pages/learn.astro
+    shadow: "shadow-indigo-100"
+  },
+  {
+    title: "分类词库",
+    desc: "HSK / 商务 / 日常",
+    icon: HiCollection,
+    color: "bg-emerald-500",
+    link: "/categories", 
+    shadow: "shadow-emerald-100"
+  },
+  {
+    title: "拼音点读",
+    desc: "点击汉字 实时发音",
+    icon: HiMicrophone,
+    color: "bg-orange-500",
+    link: "/pinyin-touch",
+    shadow: "shadow-orange-100"
+  },
+  {
+    title: "学习统计",
+    desc: "查看你的进步曲线",
+    icon: HiChartBar,
+    color: "bg-rose-500",
+    link: "/stats",
+    shadow: "shadow-rose-100"
+  }
+];
 ---
 
 <Layout>
   <Header />
-  <main id="main-content" class="min-h-[calc(100vh-150px)] flex flex-col bg-[#FDFDFD] dark:bg-zinc-900 transition-colors">
-    
-    <section class="px-6 pt-8">
-      <div class="bg-indigo-600 rounded-[2rem] p-6 text-white shadow-xl shadow-indigo-100 dark:shadow-none relative overflow-hidden">
-        <div class="relative z-10 flex justify-between items-center">
-          <div>
-            <p class="text-indigo-200 text-xs font-bold uppercase tracking-widest mb-1">HSK Level 5</p>
-            <h2 class="text-xl font-black">每日核心词汇</h2>
-          </div>
-          <div class="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full backdrop-blur-md">
-            <HiFire class="text-orange-400" />
-            <span class="text-xs font-bold">12 Days</span>
-          </div>
+  <main class="min-h-screen bg-[#F8FAFC] pb-20">
+    <section class="px-6 pt-10 pb-6">
+      <div class="flex items-center justify-between mb-2">
+        <h1 class="text-3xl font-black text-slate-900">你好, 同学 👋</h1>
+        <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky" alt="avatar" />
         </div>
-        <div class="mt-4 w-full bg-black/10 h-2 rounded-full overflow-hidden border border-white/5">
-           <div class="bg-white h-full w-[45%] rounded-full shadow-[0_0_8px_white]"></div>
+      </div>
+      <p class="text-slate-500 font-medium">今天想要学习什么内容？</p>
+    </section>
+
+    <section class="px-6 mb-8">
+      <div class="bg-slate-900 rounded-[2rem] p-6 text-white relative overflow-hidden group">
+        <div class="relative z-10">
+          <span class="bg-indigo-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase mb-3 inline-block">Daily Challenge</span>
+          <h2 class="text-xl font-bold mb-1">连续打卡 12 天</h2>
+          <p class="text-slate-400 text-sm">再学 5 个单词即可完成今日任务</p>
         </div>
+        <HiPlusCircle className="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12" />
       </div>
     </section>
 
-    <section class="flex-1 px-6 py-8 flex flex-col justify-center items-center">
-      <div class="w-full max-w-md bg-white dark:bg-zinc-800 rounded-[3rem] p-10 shadow-[0_30px_60px_-12px_rgba(0,0,0,0.05)] border border-slate-50 dark:border-zinc-700 flex flex-col items-center relative">
-        
-        <div class="text-indigo-500 dark:text-indigo-400 font-bold tracking-[0.3em] mb-2 uppercase text-lg italic">
-          {displayPinyin}
-        </div>
-        
-        <h1 class="text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter">
-          {word}
-        </h1>
-
-        <div class="w-full bg-slate-50 dark:bg-zinc-700/50 rounded-[2rem] p-6 mb-8 border border-slate-100 dark:border-zinc-700">
-          <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase mb-2">
-            <HiSparkles /> <span>AI Insight</span>
+    <section class="px-6 grid grid-cols-2 gap-4">
+      {modules.map(mod => (
+        <a href={mod.link} class="group">
+          <div class={`h-full p-6 rounded-[2rem] bg-white border border-slate-50 shadow-xl ${mod.shadow} active:scale-95 transition-all duration-200`}>
+            <div class={`w-12 h-12 ${mod.color} rounded-2xl flex items-center justify-center mb-4 text-white shadow-lg`}>
+              <mod.icon size={24} />
+            </div>
+            <h3 class="font-bold text-slate-800 mb-1">{mod.title}</h3>
+            <p class="text-[10px] text-slate-400 font-medium leading-tight">{mod.desc}</p>
           </div>
-          <p class="text-xl font-bold text-slate-700 dark:text-zinc-200 leading-tight">
-            {translation}
-          </p>
-        </div>
+        </a>
+      ))}
+    </section>
 
-        <div class="flex gap-4 w-full">
-          <button class="flex-1 py-5 bg-white dark:bg-zinc-800 border-b-4 border-slate-200 dark:border-zinc-950 rounded-2xl flex items-center justify-center text-slate-600 dark:text-zinc-400 active:border-b-0 active:translate-y-1 transition-all">
-            <HiVolumeUp size={30} />
-          </button>
-          <button class="flex-1 py-5 bg-rose-500 border-b-4 border-rose-700 rounded-2xl flex items-center justify-center text-white active:border-b-0 active:translate-y-1 transition-all shadow-lg shadow-rose-100 dark:shadow-none">
-            <HiMicrophone size={30} />
-          </button>
-        </div>
+    <section class="px-6 mt-10">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="font-bold text-slate-900">最近在学</h3>
+        <button class="text-xs font-bold text-indigo-600">查看全部</button>
+      </div>
+      <div class="space-y-3">
+        {['深造', '潜力', '趋势'].map(word => (
+          <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-50 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
+              <span class="font-bold text-slate-700">{word}</span>
+            </div>
+            <HiArrowRight className="text-slate-300" />
+          </div>
+        ))}
       </div>
     </section>
-
-    <section class="px-6 pb-10">
-      <button class="w-full py-5 bg-slate-900 dark:bg-indigo-600 text-white rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 shadow-2xl active:scale-95 transition-all">
-        下一个单词 <HiChevronRight size={24} />
-      </button>
-    </section>
-
   </main>
   <Footer />
 </Layout>
 
 <style>
-  /* 针对移动端隐藏滚动条，保持 App 感 */
-  main::-webkit-scrollbar { display: none; }
+  /* 适配移动端点击效果 */
   * { -webkit-tap-highlight-color: transparent; }
 </style>
