@@ -2,107 +2,45 @@
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import { 
-  HiBookOpen, HiCollection, HiMicrophone, HiChartBar, HiPlusCircle, HiArrowRight 
-} from 'react-icons/hi/index.js';
+import * as Icons from 'react-icons/hi'; // 这种引入方式在部署时更稳健
 
-// 定义功能板块
 const modules = [
-  {
-    title: "AI 背单词",
-    desc: "多邻国式沉浸学习",
-    icon: HiBookOpen,
-    color: "bg-indigo-500",
-    link: "/learn", // 对应 src/pages/learn.astro
-    shadow: "shadow-indigo-100"
-  },
-  {
-    title: "分类词库",
-    desc: "HSK / 商务 / 日常",
-    icon: HiCollection,
-    color: "bg-emerald-500",
-    link: "/categories", 
-    shadow: "shadow-emerald-100"
-  },
-  {
-    title: "拼音点读",
-    desc: "点击汉字 实时发音",
-    icon: HiMicrophone,
-    color: "bg-orange-500",
-    link: "/pinyin-touch",
-    shadow: "shadow-orange-100"
-  },
-  {
-    title: "学习统计",
-    desc: "查看你的进步曲线",
-    icon: HiChartBar,
-    color: "bg-rose-500",
-    link: "/stats",
-    shadow: "shadow-rose-100"
-  }
+  { title: "AI 背单词", desc: "多邻国式学习", link: "/learn", color: "bg-indigo-500" },
+  { title: "分类词库", desc: "HSK 专项突破", link: "/categories", color: "bg-emerald-500" },
+  { title: "拼音点读", desc: "点击发音练习", link: "/pinyin", color: "bg-orange-500" },
+  { title: "学习统计", desc: "查看进步曲线", link: "/stats", color: "bg-rose-500" }
 ];
 ---
 
 <Layout>
   <Header />
-  <main class="min-h-screen bg-[#F8FAFC] pb-20">
-    <section class="px-6 pt-10 pb-6">
-      <div class="flex items-center justify-between mb-2">
-        <h1 class="text-3xl font-black text-slate-900">你好, 同学 👋</h1>
-        <div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border-2 border-white shadow-sm">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lucky" alt="avatar" />
-        </div>
-      </div>
-      <p class="text-slate-500 font-medium">今天想要学习什么内容？</p>
-    </section>
+  <main class="min-h-screen bg-slate-50 dark:bg-zinc-900 px-6 py-10">
+    <h1 class="text-3xl font-black mb-2 dark:text-white">学习中心</h1>
+    <p class="text-slate-500 mb-10 text-sm">选择一个模块开始今天的旅程</p>
 
-    <section class="px-6 mb-8">
-      <div class="bg-slate-900 rounded-[2rem] p-6 text-white relative overflow-hidden group">
-        <div class="relative z-10">
-          <span class="bg-indigo-500 text-[10px] font-bold px-2 py-1 rounded-md uppercase mb-3 inline-block">Daily Challenge</span>
-          <h2 class="text-xl font-bold mb-1">连续打卡 12 天</h2>
-          <p class="text-slate-400 text-sm">再学 5 个单词即可完成今日任务</p>
-        </div>
-        <HiPlusCircle className="absolute -right-4 -bottom-4 w-32 h-32 text-white/5 rotate-12" />
-      </div>
-    </section>
-
-    <section class="px-6 grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 gap-4">
       {modules.map(mod => (
-        <a href={mod.link} class="group">
-          <div class={`h-full p-6 rounded-[2rem] bg-white border border-slate-50 shadow-xl ${mod.shadow} active:scale-95 transition-all duration-200`}>
-            <div class={`w-12 h-12 ${mod.color} rounded-2xl flex items-center justify-center mb-4 text-white shadow-lg`}>
-              <mod.icon size={24} />
+        <a href={mod.link} class="active:scale-95 transition-all">
+          <div class="bg-white dark:bg-zinc-800 p-6 rounded-[2rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-50 dark:border-zinc-700">
+            <div class={`${mod.color} w-10 h-10 rounded-xl mb-4 flex items-center justify-center text-white`}>
+              <Icons.HiCollection size={20} />
             </div>
-            <h3 class="font-bold text-slate-800 mb-1">{mod.title}</h3>
-            <p class="text-[10px] text-slate-400 font-medium leading-tight">{mod.desc}</p>
+            <h3 class="font-bold text-slate-800 dark:text-zinc-100 text-sm">{mod.title}</h3>
+            <p class="text-[10px] text-slate-400 mt-1">{mod.desc}</p>
           </div>
         </a>
       ))}
-    </section>
+    </div>
 
-    <section class="px-6 mt-10">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="font-bold text-slate-900">最近在学</h3>
-        <button class="text-xs font-bold text-indigo-600">查看全部</button>
-      </div>
-      <div class="space-y-3">
-        {['深造', '潜力', '趋势'].map(word => (
-          <div class="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-50 shadow-sm">
-            <div class="flex items-center gap-3">
-              <div class="w-2 h-2 rounded-full bg-indigo-500"></div>
-              <span class="font-bold text-slate-700">{word}</span>
-            </div>
-            <HiArrowRight className="text-slate-300" />
+    <div class="mt-12">
+       <h2 class="font-bold mb-4 dark:text-white">最近学习</h2>
+       <div class="bg-white dark:bg-zinc-800 rounded-2xl p-4 border border-slate-100 dark:border-zinc-700">
+          <div class="flex items-center justify-between font-bold text-slate-700 dark:text-zinc-300">
+             <span>深造</span>
+             <Icons.HiChevronRight />
           </div>
-        ))}
-      </div>
-    </section>
+       </div>
+    </div>
   </main>
   <Footer />
 </Layout>
-
-<style>
-  /* 适配移动端点击效果 */
-  * { -webkit-tap-highlight-color: transparent; }
-</style>
