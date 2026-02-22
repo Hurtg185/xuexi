@@ -3,119 +3,80 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
-import Socials from "@/components/Socials.astro";
-import LinkButton from "@/components/LinkButton.astro";
-import Card from "@/components/Card.astro";
-import getSortedPosts from "@/utils/getSortedPosts";
-import IconRss from "@/assets/icons/IconRss.svg";
-import IconArrowRight from "@/assets/icons/IconArrowRight.svg";
-import { SITE } from "@/config";
-import { SOCIALS } from "@/constants";
+import { pinyin } from 'pinyin-pro';
+import { HiSparkles, HiVolumeUp, HiMicrophone, HiFire, HiChevronRight } from 'react-icons/hi';
 
-const posts = await getCollection("blog");
-
-const sortedPosts = getSortedPosts(posts);
-const featuredPosts = sortedPosts.filter(({ data }) => data.featured);
-const recentPosts = sortedPosts.filter(({ data }) => !data.featured);
+// 模拟 HSK 数据
+const word = "深造";
+const translation = "To pursue advanced studies";
+const displayPinyin = pinyin(word, { type: 'tone' });
 ---
 
 <Layout>
   <Header />
-  <main id="main-content" data-layout="index" class="app-layout">
-    <section id="hero" class:list={["pt-8 pb-6", "border-b border-border"]}>
-      <h1 class="my-4 inline-block text-4xl font-bold sm:my-8 sm:text-5xl">
-        Mingalaba
-      </h1>
-      <a
-        target="_blank"
-        href="/rss.xml"
-        class="inline-block"
-        aria-label="rss feed"
-        title="RSS Feed"
-      >
-        <IconRss
-          width={20}
-          height={20}
-          class="scale-125 stroke-accent stroke-3 rtl:-rotate-90"
-        />
-        <span class="sr-only">RSS Feed</span>
-      </a>
-
-      <p>
-        AstroPaper is a minimal, responsive, accessible and SEO-friendly Astro
-        blog theme. This theme follows best practices and provides accessibility
-        out of the box. Light and dark mode are supported by default. Moreover,
-        additional color schemes can also be configured.
-      </p>
-      <p class="mt-2">
-        Read the blog posts or check
-        <LinkButton
-          class="underline decoration-dashed underline-offset-4 hover:text-accent"
-          href="https://github.com/satnaing/astro-paper#readme"
-        >
-          README
-        </LinkButton> for more info.
-      </p>
-      {
-        // only display if at least one social link is enabled
-        SOCIALS.length > 0 && (
-          <div class="mt-4 flex max-sm:flex-col sm:items-center">
-            <div class="me-2 mb-1 whitespace-nowrap sm:mb-0">Social Links:</div>
-            <Socials />
+  <main id="main-content" class="min-h-[calc(100vh-150px)] flex flex-col bg-[#FDFDFD] dark:bg-zinc-900 transition-colors">
+    
+    <section class="px-6 pt-8">
+      <div class="bg-indigo-600 rounded-[2rem] p-6 text-white shadow-xl shadow-indigo-100 dark:shadow-none relative overflow-hidden">
+        <div class="relative z-10 flex justify-between items-center">
+          <div>
+            <p class="text-indigo-200 text-xs font-bold uppercase tracking-widest mb-1">HSK Level 5</p>
+            <h2 class="text-xl font-black">每日核心词汇</h2>
           </div>
-        )
-      }
+          <div class="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full backdrop-blur-md">
+            <HiFire class="text-orange-400" />
+            <span class="text-xs font-bold">12 Days</span>
+          </div>
+        </div>
+        <div class="mt-4 w-full bg-black/10 h-2 rounded-full overflow-hidden border border-white/5">
+           <div class="bg-white h-full w-[45%] rounded-full shadow-[0_0_8px_white]"></div>
+        </div>
+      </div>
     </section>
 
-    {
-      featuredPosts.length > 0 && (
-        <section
-          id="featured"
-          class:list={[
-            "pt-12 pb-6",
-            { "border-b border-border": recentPosts.length > 0 },
-          ]}
-        >
-          <h2 class="text-2xl font-semibold tracking-wide">Featured</h2>
-          <ul>
-            {featuredPosts.map(data => (
-              <Card variant="h3" {...data} />
-            ))}
-          </ul>
-        </section>
-      )
-    }
+    <section class="flex-1 px-6 py-8 flex flex-col justify-center items-center">
+      <div class="w-full max-w-md bg-white dark:bg-zinc-800 rounded-[3rem] p-10 shadow-[0_30px_60px_-12px_rgba(0,0,0,0.05)] border border-slate-50 dark:border-zinc-700 flex flex-col items-center relative">
+        
+        <div class="text-indigo-500 dark:text-indigo-400 font-bold tracking-[0.3em] mb-2 uppercase text-lg italic">
+          {displayPinyin}
+        </div>
+        
+        <h1 class="text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter">
+          {word}
+        </h1>
 
-    {
-      recentPosts.length > 0 && (
-        <section id="recent-posts" class="pt-12 pb-6">
-          <h2 class="text-2xl font-semibold tracking-wide">Recent Posts</h2>
-          <ul>
-            {recentPosts.map(
-              (data, index) =>
-                index < SITE.postPerIndex && <Card variant="h3" {...data} />
-            )}
-          </ul>
-        </section>
-      )
-    }
+        <div class="w-full bg-slate-50 dark:bg-zinc-700/50 rounded-[2rem] p-6 mb-8 border border-slate-100 dark:border-zinc-700">
+          <div class="flex items-center gap-2 text-indigo-600 dark:text-indigo-300 text-[10px] font-black uppercase mb-2">
+            <HiSparkles /> <span>AI Insight</span>
+          </div>
+          <p class="text-xl font-bold text-slate-700 dark:text-zinc-200 leading-tight">
+            {translation}
+          </p>
+        </div>
 
-    <div class="my-8 text-center">
-      <LinkButton href="/posts/">
-        All Posts
-        <IconArrowRight class="inline-block rtl:-rotate-180" />
-      </LinkButton>
-    </div>
+        <div class="flex gap-4 w-full">
+          <button class="flex-1 py-5 bg-white dark:bg-zinc-800 border-b-4 border-slate-200 dark:border-zinc-950 rounded-2xl flex items-center justify-center text-slate-600 dark:text-zinc-400 active:border-b-0 active:translate-y-1 transition-all">
+            <HiVolumeUp size={30} />
+          </button>
+          <button class="flex-1 py-5 bg-rose-500 border-b-4 border-rose-700 rounded-2xl flex items-center justify-center text-white active:border-b-0 active:translate-y-1 transition-all shadow-lg shadow-rose-100 dark:shadow-none">
+            <HiMicrophone size={30} />
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="px-6 pb-10">
+      <button class="w-full py-5 bg-slate-900 dark:bg-indigo-600 text-white rounded-[2rem] font-black text-xl flex items-center justify-center gap-3 shadow-2xl active:scale-95 transition-all">
+        下一个单词 <HiChevronRight size={24} />
+      </button>
+    </section>
+
   </main>
   <Footer />
 </Layout>
 
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const indexLayout = (document.querySelector("#main-content") as HTMLElement)
-      ?.dataset?.layout;
-    if (indexLayout) {
-      sessionStorage.setItem("backUrl", "/");
-    }
-  });
-</script>
+<style>
+  /* 针对移动端隐藏滚动条，保持 App 感 */
+  main::-webkit-scrollbar { display: none; }
+  * { -webkit-tap-highlight-color: transparent; }
+</style>
